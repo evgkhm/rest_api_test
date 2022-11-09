@@ -1,0 +1,30 @@
+version: '3.5'
+
+services:
+  postgres:
+    container_name: postgres
+    restart: always
+    ports:
+      - "5436:5432" #"5438:5432"
+    env_file:
+      - .env
+    #environment:
+    #  - POSTGRES_PASSWORD=admin
+    #  - POSTGRES_USER=admin
+    #  - POSTGRES_DB=postgres
+    image: postgres:15.0-alpine3.16
+    volumes:
+      - ./schema/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  rest_api_test:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always
+    command: ./rest_api_test
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    env_file:
+      - /.env
