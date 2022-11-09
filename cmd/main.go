@@ -13,7 +13,7 @@ import (
 func main() {
 	logrus.SetFormatter(&logrus.JSONFormatter{})
 
-	if err := godotenv.Load("../.env"); err != nil { //"../.env" for local using
+	if err := godotenv.Load("./.env"); err != nil { //"../.env" for local using
 		logrus.Fatalf("error loading env variables :%s", err.Error())
 	}
 
