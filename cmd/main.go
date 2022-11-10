@@ -2,8 +2,6 @@ package main
 
 import (
 	"github.com/joho/godotenv"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	"github.com/sirupsen/logrus"
 	"rest_api_test/internal/handler"
 	"rest_api_test/internal/repository"
@@ -28,16 +26,9 @@ func main() {
 
 	handlers := handler.NewHandler(services)
 
-	e := echo.New()
-
-	// Middleware
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
-
-	// Routes
-	//e.GET("/", handler.Hello)
-	e.GET("/", handlers.Hello)
-
-	// Start server
-	e.Logger.Fatal(e.Start(":1323"))
+	r := handlers.InitRoutes()
+	/*r.GET("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, handlers)
+	})*/
+	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }

@@ -1,26 +1,30 @@
 package handler
 
 import (
-	"github.com/labstack/echo/v4"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"rest_api_test/internal/service"
 )
 
 type Auth interface {
-	Hello(c echo.Context) error
+	Hello(c gin.Context)
 }
 
 type Handler struct {
-	Auth
+	services *service.Service
 }
 
-func NewHandler(service *service.Service) *Handler {
-	return &Handler{}
+func (h Handler) InitRoutes() *gin.Engine {
+	router := gin.Default()
+	router.GET("/ping", h.hello)
+	router.POST("/create_user", h.createUser)
+	return router
 }
 
-// Handler
-func Hello(c echo.Context) error {
-	return c.String(http.StatusOK, "Hello, World!")
+func (h Handler) hello(c *gin.Context) {
+	c.JSON(http.StatusOK, "Hello")
 }
 
-//func
+func NewHandler(services *service.Service) *Handler {
+	return &Handler{services: services}
+}

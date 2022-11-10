@@ -20,7 +20,6 @@ type Auth interface {
 }
 
 type Repository struct {
-	Auth
 }
 
 func NewPostgresDB() (db *sqlx.DB, err error) {
