@@ -18,7 +18,19 @@ func (r *Postgres) CreateUser(user rest_api_test.User) error {
 	sqlStr := `insert into "usr" values ($1,$2)`
 	_, err = tx.Exec(sqlStr, user.Id, user.Balance)
 	if err != nil {
-		tx.Rollback()
+		err = tx.Rollback()
+		if err != nil {
+			return err
+		}
+		return err
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		err = tx.Rollback()
+		if err != nil {
+			return err
+		}
 		return err
 	}
 	return err

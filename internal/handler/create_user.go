@@ -13,6 +13,10 @@ func (h Handler) CreateUser(c *gin.Context) {
 	if err != nil {
 		//newErrorResponse(c, http.StatusBadRequest, "invalid input body")
 		c.JSON(http.StatusBadRequest, "Bad request")
+		return
 	}
-	h.services.CreateUser(input)
+	err = h.services.CreateUser(input)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, "InternalServerError")
+	}
 }

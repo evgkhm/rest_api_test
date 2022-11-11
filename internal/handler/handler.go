@@ -13,7 +13,7 @@ type Handler struct {
 	services *service.Service
 }
 
-func (h Handler) InitRoutes() *gin.Engine {
+func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.Default()
 
 	router.POST("/create_user", h.CreateUser)
