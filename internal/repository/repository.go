@@ -5,6 +5,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"os"
+	"rest_api_test"
 )
 
 type Config struct {
@@ -16,10 +17,12 @@ type Config struct {
 	SSLMode  string
 }
 
-type Auth interface {
+type Creating interface {
+	CreateUser(user rest_api_test.User) error
 }
 
 type Repository struct {
+	Creating
 }
 
 func NewPostgresDB() (db *sqlx.DB, err error) {
@@ -41,5 +44,7 @@ func NewPostgresDB() (db *sqlx.DB, err error) {
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
-	return &Repository{}
+	return &Repository{
+		Creating: NewPostgres(db),
+	}
 }

@@ -2,12 +2,11 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"rest_api_test/internal/service"
 )
 
-type Auth interface {
-	Hello(c gin.Context)
+type Creating interface {
+	CreateUser(c *gin.Context)
 }
 
 type Handler struct {
@@ -16,13 +15,9 @@ type Handler struct {
 
 func (h Handler) InitRoutes() *gin.Engine {
 	router := gin.Default()
-	router.GET("/ping", h.hello)
-	router.POST("/create_user", h.createUser)
-	return router
-}
 
-func (h Handler) hello(c *gin.Context) {
-	c.JSON(http.StatusOK, "Hello")
+	router.POST("/create_user", h.CreateUser)
+	return router
 }
 
 func NewHandler(services *service.Service) *Handler {

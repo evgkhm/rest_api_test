@@ -1,14 +1,20 @@
 package service
 
-import "rest_api_test/internal/repository"
+import (
+	"rest_api_test"
+	"rest_api_test/internal/repository"
+)
 
-type Auth interface {
+type Creating interface {
+	CreateUser(user rest_api_test.User) error
 }
 
 type Service struct {
-	Auth
+	Creating
 }
 
 func NewService(repos *repository.Repository) *Service {
-	return &Service{}
+	return &Service{
+		Creating: NewCreateService(repos.Creating),
+	}
 }
