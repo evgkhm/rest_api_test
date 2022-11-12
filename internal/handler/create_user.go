@@ -18,5 +18,7 @@ func (h Handler) CreateUser(c *gin.Context) {
 	err = h.services.CreateUser(input)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, "InternalServerError")
+		return
 	}
+	c.JSON(http.StatusOK, "Ok")
 }

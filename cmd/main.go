@@ -3,6 +3,8 @@ package main
 import (
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
+	"log"
+	"os"
 	"rest_api_test/internal/handler"
 	"rest_api_test/internal/repository"
 	"rest_api_test/internal/service"
@@ -10,9 +12,8 @@ import (
 
 func main() {
 	logrus.SetFormatter(&logrus.JSONFormatter{})
-
-	if err := godotenv.Load("./.env"); err != nil { //"../.env" for local using
-		logrus.Fatalf("error loading env variables :%s", err.Error())
+	if err := godotenv.Load("../.env"); err != nil && !os.IsNotExist(err) {
+		log.Fatalln("Error loading .env")
 	}
 
 	db, err := repository.NewPostgresDB()
